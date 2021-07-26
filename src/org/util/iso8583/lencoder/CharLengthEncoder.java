@@ -1,7 +1,7 @@
 package org.util.iso8583.lencoder;
 
-import org.util.iso8583.internals.Index;
-import org.util.iso8583.internals.LengthEncoder;
+import org.util.iso8583.api.Index;
+import org.util.iso8583.api.LengthEncoder;
 
 public final class CharLengthEncoder extends LengthEncoder {
 

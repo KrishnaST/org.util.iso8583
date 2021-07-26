@@ -2,9 +2,9 @@ package org.util.iso8583.encoder;
 
 import java.util.Arrays;
 
+import org.util.iso8583.api.Encoder;
 import org.util.iso8583.api.ISOFormat;
-import org.util.iso8583.internals.Encoder;
-import org.util.iso8583.internals.Index;
+import org.util.iso8583.api.Index;
 import org.util.iso8583.util.ByteHexUtil;
 import org.util.iso8583.util.PackedBCD;
 

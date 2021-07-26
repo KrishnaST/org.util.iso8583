@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import org.util.iso8583.api.ISOFormat;
-import org.util.iso8583.internals.Index;
+import org.util.iso8583.api.Index;
 
 public final class ISO8583MessageSender {
 

@@ -1,8 +1,5 @@
 package org.util.iso8583.api;
 
-import org.util.iso8583.internals.Encoder;
-import org.util.iso8583.internals.LengthEncoder;
-
 public abstract class ISOFormat {
 
 	public static final int MESSAGE_LENGTH_ENCODER_INDEX = 0;

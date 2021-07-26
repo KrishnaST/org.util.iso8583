@@ -1,6 +1,5 @@
 package org.util.iso8583.api;
 
-import org.util.iso8583.internals.LengthEncoder;
 import org.util.iso8583.lencoder.BcdLengthEncoder;
 import org.util.iso8583.lencoder.BinLengthEncoder;
 import org.util.iso8583.lencoder.CharLengthEncoder;

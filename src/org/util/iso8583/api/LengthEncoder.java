@@ -1,4 +1,4 @@
-package org.util.iso8583.internals;
+package org.util.iso8583.api;
 
 public abstract class LengthEncoder {
 

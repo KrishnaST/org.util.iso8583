@@ -1,6 +1,5 @@
-package org.util.iso8583.internals;
+package org.util.iso8583.api;
 
-import org.util.iso8583.api.ISOFormat;
 import org.util.iso8583.encoder.BcdLEncoder;
 import org.util.iso8583.encoder.BcdREncoder;
 import org.util.iso8583.encoder.BinEncoder;

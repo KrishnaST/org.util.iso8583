@@ -3,8 +3,8 @@ package org.util.iso8583;
 import java.util.Arrays;
 
 import org.util.iso8583.api.ISOFormat;
+import org.util.iso8583.api.Index;
 import org.util.iso8583.internals.ByteBuffer;
-import org.util.iso8583.internals.Index;
 import org.util.iso8583.internals.LoggerUtils;
 import org.util.iso8583.util.Bitmap;
 import org.util.iso8583.util.ByteHexUtil;

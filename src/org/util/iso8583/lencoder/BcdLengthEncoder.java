@@ -2,8 +2,8 @@ package org.util.iso8583.lencoder;
 
 import java.util.Arrays;
 
-import org.util.iso8583.internals.Index;
-import org.util.iso8583.internals.LengthEncoder;
+import org.util.iso8583.api.Index;
+import org.util.iso8583.api.LengthEncoder;
 import org.util.iso8583.util.ByteHexUtil;
 import org.util.iso8583.util.PackedBCD;
 

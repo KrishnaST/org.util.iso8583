@@ -10,7 +10,6 @@ import org.util.iso8583.encoder.VarBcdREncoder;
 import org.util.iso8583.encoder.VarBinEncoder;
 import org.util.iso8583.encoder.VarCharEncoder;
 import org.util.iso8583.encoder.VarNumEncoder;
-import org.util.iso8583.internals.Encoder;
 
 //@formatter:off
 public enum Encoding {
