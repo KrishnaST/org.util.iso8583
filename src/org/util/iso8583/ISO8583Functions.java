@@ -1,8 +1,7 @@
-package org.util.iso8583.ext;
+package org.util.iso8583;
 
 import java.util.Map;
 
-import org.util.iso8583.ISO8583MessageHelper;
 import org.util.iso8583.api.ISO8583Function;
 import org.util.iso8583.util.Bitmap;
 import org.util.iso8583.util.MiscUtil;
