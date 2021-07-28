@@ -13,6 +13,7 @@ import org.util.iso8583.util.ByteHexUtil;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
+		
 		long start = System.currentTimeMillis();
 		final List<String> list = Files.lines(new File("coreconnect.log").toPath()).filter(l -> l.contains("write to npci : ") || l.contains("read from npci : ")).collect(Collectors.toList());
 		System.out.println("list size : "+list.size());
