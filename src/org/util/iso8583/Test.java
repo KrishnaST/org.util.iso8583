@@ -28,7 +28,6 @@ public class Test {
 			System.out.println(EncoderDecoder.log(message));
 			System.out.println(EncoderDecoder.log(message1));
 			if(!message.equals(message1)) throw new RuntimeException("false");
-			//if(!Arrays.equals(bytes, bytes1)) throw new RuntimeException("false");
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(end-start);
