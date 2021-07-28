@@ -9,8 +9,9 @@ public abstract class ISOFormat {
 
 	public static final int NET_HEADER_INDEX = 129;
 
-	protected char bcdPadChar          = '0';
-	protected int  messageLengthLength = 2;
+	protected boolean isBitmapUpperCase   = false;
+	protected char    bcdPadChar          = '0';
+	protected int     messageLengthLength = 2;
 
 	public final String          name;
 	public final int[]           length   = new int[130];
@@ -31,7 +32,7 @@ public abstract class ISOFormat {
 		return length[NET_HEADER_INDEX];
 	}
 
-	public final Encoder getNetHeaderEncoding(){
+	public final Encoder getNetHeaderEncoding() {
 		return encoder[NET_HEADER_INDEX];
 	}
 
@@ -59,18 +60,22 @@ public abstract class ISOFormat {
 		return lencoder[MESSAGE_LENGTH_ENCODER_INDEX];
 	}
 
+	public final boolean isBitmapUpperCase() {
+		return isBitmapUpperCase;
+	}
+
 	public final boolean equals(final ISOFormat format) {
 		for (int i = 0; i < encoder.length; i++) {
-			if(encoder[i] != format.encoder[i]) return false;
+			if (encoder[i] != format.encoder[i]) return false;
 		}
 		for (int i = 0; i < lencoder.length; i++) {
-			if(lencoder[i] != format.lencoder[i]) return false;
+			if (lencoder[i] != format.lencoder[i]) return false;
 		}
 		for (int i = 0; i < length.length; i++) {
-			if(length[i] != format.length[i]) return false;
+			if (length[i] != format.length[i]) return false;
 		}
-		if(bcdPadChar != format.bcdPadChar) return false;
-		if(messageLengthLength != format.messageLengthLength) return false;
+		if (bcdPadChar != format.bcdPadChar) return false;
+		if (messageLengthLength != format.messageLengthLength) return false;
 		return true;
 	}
 }

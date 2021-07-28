@@ -17,11 +17,10 @@ public final class EncoderDecoder {
 	private static final String  dassedLine = Strings.repeat(new StringBuilder(lwidth * 2 + 20).append(" "), '-', lwidth * 2 + 17).append(" \r\n").toString();
 	private static final String  spaces     = Strings.repeat(new StringBuilder(), ' ', lwidth + 8).toString();
 	
-	
 	public static boolean debug = false;
 
 	public static final byte[] encode(final ISOFormat format, final ISO8583Message message) {
-		if(message == null) throw new RuntimeException("iso message can not be null.");
+		if(message == null) throw new NullPointerException("iso message can not be null.");
 		if(message.data[0] == null) throw new RuntimeException("mti can not be null.");
 		final Index index = new Index();
 		try {
@@ -39,7 +38,7 @@ public final class EncoderDecoder {
 			if(debug) System.out.println("MTI encoded : "+data[0]);
 			index.fIndex = 1;
 			final byte[] bitsmap = bitmap.toBytes();
-			data[1] = ByteHexUtil.byteToHex(bitsmap);
+			data[1] = format.isBitmapUpperCase() ? ByteHexUtil.byteToHex(bitsmap).toUpperCase() : ByteHexUtil.byteToHex(bitsmap).toLowerCase();
 			buffer.write(format.encoder[1].encode(index, format, data[1].substring(0, 16)));
 			if(debug) System.out.println("bitmap encoded : "+data[1]);
 			if ((bitsmap[0] & 0x80) == 0x80) buffer.write(format.encoder[1].encode(index, format, data[1].substring(16)));
@@ -100,10 +99,12 @@ public final class EncoderDecoder {
 		if (message == null) return null;
 		final StringBuilder sb = new StringBuilder(2000);
 		message.data[1] = ByteHexUtil.byteToHex(message.bitmap.toBytes());
-		boolean toggle = true;
+		boolean toggle = false;
 		sb.append("\r\n");
 		sb.append(dassedLine);
-		for (int i = 0; i < 129; i++) {
+		sb.append(LoggerUtils.DE[0]);
+		Strings.padRightSpecial(sb, message.data[0], ' ', lwidth);
+		for (int i = 1; i < 129; i++) {
 			if (message.bitmap.get(i)) {
 				sb.append(LoggerUtils.DE[i]);
 				Strings.padRightSpecial(sb, message.data[i], ' ', lwidth);

@@ -77,7 +77,7 @@ public final class ISO8583Message {
 	}
 
 	@SuppressWarnings("unchecked")
-	public final <T> T getExtra(final Class<T> classz, final String key) throws ClassCastException {
+	public final <T> T getExtra(final Class<T> classz, final String key) {
 		return (T) extra.get(key);
 	}
 
