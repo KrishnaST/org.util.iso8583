@@ -6,7 +6,7 @@ public final class ISO8583LogSupplier implements Supplier<StringBuilder> {
 
 	private final ISO8583Message message;
 
-	public ISO8583LogSupplier(ISO8583Message message) {
+	public ISO8583LogSupplier(final ISO8583Message message) {
 		this.message = message;
 	}
 

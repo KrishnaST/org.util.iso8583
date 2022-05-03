@@ -3,6 +3,7 @@ package org.util.iso8583.format;
 import static org.util.iso8583.api.Encoding.*;
 
 import org.util.iso8583.api.ISOFormat;
+import org.util.iso8583.api.LengthEncoding;
 
 public final class CBSFormat extends ISOFormat {
 
@@ -18,6 +19,15 @@ public final class CBSFormat extends ISOFormat {
 	
 	private CBSFormat() {
 		super("CBS");
+		
+		this.messageLengthLength = 4;
+		
+		lencoder[MESSAGE_LENGTH_ENCODER_INDEX] = LengthEncoding.CHAR.encoder;
+		lencoder[CHAR_LENGTH_ENCODER_INDEX]    = LengthEncoding.CHAR.encoder;
+		lencoder[BCD_LENGTH_ENCODER_INDEX]     = LengthEncoding.BCD.encoder;
+		lencoder[BIN_LENGTH_ENCODER_INDEX]     = LengthEncoding.BIN.encoder;
+		
+		
 		length[0]   = 4;
 		encoder[0] = NUM.encoder;
 

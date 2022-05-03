@@ -1,7 +1,12 @@
 package org.util.iso8583;
 
+import static org.util.iso8583.api.ISO8583ExceptionCause.STREAM_READ_ERROR;
+
+import java.io.InputStream;
 import java.util.Arrays;
 
+import org.util.iso8583.api.ISO8583Exception;
+import org.util.iso8583.api.ISO8583ExceptionCause;
 import org.util.iso8583.api.ISOFormat;
 import org.util.iso8583.api.Index;
 import org.util.iso8583.internals.ByteBuffer;
@@ -17,8 +22,29 @@ public final class EncoderDecoder {
 	private static final String  dassedLine = Strings.repeat(new StringBuilder(lwidth * 2 + 20).append(" "), '-', lwidth * 2 + 17).append(" \r\n").toString();
 	private static final String  spaces     = Strings.repeat(new StringBuilder(), ' ', lwidth + 8).toString();
 	
-	public static boolean debug = false;
-
+	public static boolean debug = "true".equalsIgnoreCase(System.getProperty("iso8583Debug"));
+	
+	public static final byte[] read(final ISOFormat format, final InputStream in) {
+		try {
+			final int lenLen = format.getMessageLengthLength();
+			final byte[] lenBytes = new byte[lenLen];
+			int readCount = in.read(lenBytes);
+			if(debug) System.out.println("readCount : "+readCount+" lenBytes : "+ByteHexUtil.byteToHex(lenBytes));
+			if(readCount != lenLen) throw new ISO8583Exception(STREAM_READ_ERROR, "instream has insufficient data readCount : "+readCount+" lenBytes : "+ByteHexUtil.byteToHex(lenBytes));
+			final int length = format.getMessageLengthEncoder().decode(lenBytes, new Index(), lenLen);
+			final byte[] bytes = new byte[length];
+			readCount = in.read(bytes);
+			if(readCount != length) throw new ISO8583Exception(STREAM_READ_ERROR, "instream read "+ByteHexUtil.byteToHex(lenBytes)+" readcount is "+readCount+" expected length is "+length+" for format "+format.name);
+			return bytes;
+		} catch (Exception e) {
+			throw new ISO8583Exception(STREAM_READ_ERROR, "instream read error.", e);
+		}
+	}
+	
+	public static final ISO8583Message readMessage(final ISOFormat format, final InputStream in) {
+		return EncoderDecoder.decode(format, read(format, in));
+	}
+	
 	public static final byte[] encode(final ISOFormat format, final ISO8583Message message) {
 		if(message == null) throw new NullPointerException("iso message can not be null.");
 		if(message.data[0] == null) throw new RuntimeException("mti can not be null.");
@@ -51,11 +77,11 @@ public final class EncoderDecoder {
 			}
 			final byte[] bytes    = buffer.toByteArray();
 			final byte[] lenbytes = format.getMessageLengthEncoder().encode(bytes.length - format.getMessageLengthLength(), format.getMessageLengthLength());
-			System.out.println("lenbytes : "+ByteHexUtil.byteToHex(lenbytes));
+			if(debug) System.out.println("encode lenbytes : "+ByteHexUtil.byteToHex(lenbytes));
 			System.arraycopy(lenbytes, 0, bytes, 0, lenbytes.length);
 			return bytes;
 		} catch (Exception e) {
-			throw new RuntimeException("error accured while encoding field no "+index.fIndex, e);
+			throw new ISO8583Exception(ISO8583ExceptionCause.ENCODING_ERROR, "error accured while encoding field no "+index.fIndex, e);
 		}
 	}
 
@@ -68,7 +94,7 @@ public final class EncoderDecoder {
 			final String[] data    = message.data;
 			if (format.getNetHeaderLength() != 0) {
 				index.fIndex = ISOFormat.NET_HEADER_INDEX;
-				message.putNetHeader(format.getNetHeaderEncoding().decode(index, format, bytes));
+				message.setNetHeader(format.getNetHeaderEncoding().decode(index, format, bytes));
 				if(debug) System.out.println("net header decoded : "+message.getNetHeader());
 			} 
 			index.fIndex = 0;
@@ -90,7 +116,7 @@ public final class EncoderDecoder {
 			if (bytes.length > index.bIndex) throw new RuntimeException("message data remaining after decoding " + ByteHexUtil.byteToHex(Arrays.copyOfRange(bytes, index.bIndex, bytes.length)));
 			return message;
 		} catch (Exception e) {
-			throw new RuntimeException("error accured while encoding field no "+index.fIndex, e);
+			throw new ISO8583Exception(ISO8583ExceptionCause.DECODING_ERROR, "error accured while encoding field no "+index.fIndex, e);
 		}
 	}
 

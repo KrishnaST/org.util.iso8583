@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import org.util.iso8583.api.ISO8583Function;
 import org.util.iso8583.api.ISO8583Type;
@@ -29,6 +30,10 @@ public final class ISO8583Message {
 	public final String get(final int i) {
 		return data[i];
 	}
+	
+	public final <R> R get(final int i, Function<String, R> converter) {
+		return converter.apply(data[i]) ;
+	}
 
 	public final String getNetHeader() {
 		return data[129];
@@ -41,12 +46,11 @@ public final class ISO8583Message {
 	}
 
 	public final void put(final int i, final ISO8583Type isoType) {
-		if (isoType == null) return;
-		data[i] = isoType.toISOString();
-		if (data[i] != null) bitmap.set(i);
+		if(isoType == null) return;
+		put(i, isoType.value());
 	}
 
-	public final void putNetHeader(final String s) {
+	public final void setNetHeader(final String s) {
 		if (s == null) return;
 		data[129] = s;
 	}
@@ -95,7 +99,7 @@ public final class ISO8583Message {
 	}
 
 	public final void clear() {
-		if (!bitmap.isEmpty()) { bitmap.setLong(0, 0); }
+		bitmap.clear();
 		extra.clear();
 		Arrays.fill(data, null);
 	}
@@ -116,6 +120,11 @@ public final class ISO8583Message {
 		consumer.accept(0, data[0]);
 		data[1] = bitmap.toHexString();
 		consumer.accept(1, data[1]);
+		for (int i = 2; i < data.length; i++) { if (bitmap.get(i)) consumer.accept(i, data[i]); }
+	}
+	
+	public final void forEachData(final BiConsumer<Integer, String> consumer) {
+		consumer.accept(0, data[0]);
 		for (int i = 2; i < data.length; i++) { if (bitmap.get(i)) consumer.accept(i, data[i]); }
 	}
 
@@ -145,7 +154,7 @@ public final class ISO8583Message {
 		return message;
 	}
 
-	public final Map<Integer, String> toMap() {
+	public final HashMap<Integer, String> toMap() {
 		final HashMap<Integer, String> map = new HashMap<>();
 		if (data[0] != null) map.put(0, data[0]);
 		for (int i = 2; i < data.length; i++) {if (bitmap.get(i)) map.put(i, data[i]); }
@@ -153,6 +162,7 @@ public final class ISO8583Message {
 	}
 
 	public final boolean equals(final ISO8583Message message) {
+		if(!bitmap.equals(message.bitmap)) return false;
 		for (int i = 0; i < data.length; i++) {
 			if (bitmap.get(i) && !data[i].equals(message.data[i])) return false;
 		}

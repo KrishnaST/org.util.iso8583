@@ -21,16 +21,11 @@ public final class CharLengthEncoder extends LengthEncoder {
 	@Override
 	public final byte[] encode(final int dataLen, final int lenLen) {
 		final byte[] bytes = new byte[lenLen];
-		if(lenLen == 2) {
-			bytes[0] = (byte) ((dataLen/10) + '0');
-			bytes[1] = (byte) ((dataLen%10) + '0');
+		int temp = dataLen;
+		for (int i = bytes.length-1; i >= 0; i--) {
+			bytes[i] = (byte) ((temp % 10) + '0');
+			temp = temp / 10;
 		}
-		else if(lenLen == 3) {
-			bytes[0] = (byte) ((dataLen/100) + '0');
-			bytes[1] = (byte) (((dataLen%100)/10) + '0');
-			bytes[2] = (byte) ((dataLen%10) + '0');
-		}
-		else return new byte[0];
 		return bytes;
 	}
 

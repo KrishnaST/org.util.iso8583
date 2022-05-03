@@ -41,7 +41,7 @@ public final class XMLEncoderDecoder {
 		if (headerNodes.getLength() > 0) {
 			final Element netHeaderElement = (Element) headerNodes.item(0);
 			final String  netHeader    = netHeaderElement.getTextContent();
-			message.putNetHeader(netHeader);
+			message.setNetHeader(netHeader);
 		}
 		final NodeList fieldNodes = root.getElementsByTagName(FIELD_TAG);
 		final int      length     = fieldNodes.getLength();

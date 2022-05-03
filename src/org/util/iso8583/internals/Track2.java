@@ -9,6 +9,7 @@ public class Track2 {
 	public String data;
 
 	public static final Track2 parse(String string) {
+
 		if (string == null) return null;
 		try {
 			Track2 track2 = new Track2();

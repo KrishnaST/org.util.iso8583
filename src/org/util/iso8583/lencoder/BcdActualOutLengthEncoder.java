@@ -7,38 +7,35 @@ import org.util.iso8583.api.LengthEncoder;
 import org.util.iso8583.util.ByteHexUtil;
 import org.util.iso8583.util.PackedBCD;
 
-public final class BcdLengthEncoder extends LengthEncoder {
+public final class BcdActualOutLengthEncoder extends LengthEncoder {
 	
-	private static final BcdLengthEncoder BCD_LENGTH_ENCODER = new BcdLengthEncoder();
+	private static final BcdActualOutLengthEncoder BCD_LENGTH_ENCODER = new BcdActualOutLengthEncoder();
 	
-	public static final BcdLengthEncoder getInstance() {
+	public static final BcdActualOutLengthEncoder getInstance() {
 		return BCD_LENGTH_ENCODER;
 	}
 	
-	private BcdLengthEncoder() {}
+	private BcdActualOutLengthEncoder() {}
 	
 	@Override
 	public final String name() {
-		return "BCD";
+		return "BCD_ACTUAL_OUTLEN";
 	}
 
 	@Override
 	public final byte[] encode(final int dataLen, final int lenLen) {
-		if(lenLen == 2) return PackedBCD.toBCD(dataLen, 1);
-		else if(lenLen == 3) return PackedBCD.toBCD(dataLen, 2);
-		else return new byte[0];
+		return PackedBCD.toBCD(dataLen, lenLen);
 	}
 
 	@Override
 	public final int decode(final byte[] bytes, Index index, int lenLen) {
-		int bcdLen = (lenLen + 1)/2;
-		index.bIndex = index.bIndex + bcdLen;
-		return (int) PackedBCD.bcdToLong(Arrays.copyOfRange(bytes, index.bIndex - bcdLen, index.bIndex));
+		index.bIndex = index.bIndex + lenLen;
+		return (int) PackedBCD.bcdToLong(Arrays.copyOfRange(bytes, index.bIndex - lenLen, index.bIndex));
 	}
 	
 	
 	public static void main(String[] args) {
-		BcdLengthEncoder encoder = new BcdLengthEncoder();
+		BcdActualOutLengthEncoder encoder = new BcdActualOutLengthEncoder();
 		final byte[] bytes2 = encoder.encode(99, 2);
 		final byte[] bytes3 = encoder.encode(77, 3);
 		System.out.println(ByteHexUtil.byteToHex(bytes2));
