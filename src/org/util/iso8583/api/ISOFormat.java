@@ -11,7 +11,7 @@ public abstract class ISOFormat {
 
 	protected boolean isBitmapUpperCase   = false;
 	protected char    bcdPadChar          = '0';
-	protected int     messageLengthLength = 2;
+	protected int     messageLengthSize = 2;
 
 	public final String          name;
 	public final int[]           length   = new int[130];
@@ -22,9 +22,9 @@ public abstract class ISOFormat {
 		this.name = name;
 	}
 
-	public ISOFormat(String name, int messageLengthLength, char bcdPadChar) {
+	public ISOFormat(String name, int messageLengthSize, char bcdPadChar) {
 		this.bcdPadChar          = bcdPadChar;
-		this.messageLengthLength = messageLengthLength;
+		this.messageLengthSize = messageLengthSize;
 		this.name                = name;
 	}
 
@@ -52,8 +52,8 @@ public abstract class ISOFormat {
 		return bcdPadChar;
 	}
 
-	public final int getMessageLengthLength() {
-		return messageLengthLength;
+	public final int getMessageLengthSize() {
+		return messageLengthSize;
 	}
 
 	public final LengthEncoder getMessageLengthEncoder() {
@@ -75,7 +75,7 @@ public abstract class ISOFormat {
 			if (length[i] != format.length[i]) return false;
 		}
 		if (bcdPadChar != format.bcdPadChar) return false;
-		if (messageLengthLength != format.messageLengthLength) return false;
+		if (messageLengthSize != format.messageLengthSize) return false;
 		return true;
 	}
 }

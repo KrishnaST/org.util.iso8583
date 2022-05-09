@@ -2,7 +2,9 @@ package org.util.iso8583;
 
 import static org.util.iso8583.api.ISO8583ExceptionCause.STREAM_READ_ERROR;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 import java.util.Arrays;
 
 import org.util.iso8583.api.ISO8583Exception;
@@ -26,7 +28,7 @@ public final class EncoderDecoder {
 	
 	public static final byte[] read(final ISOFormat format, final InputStream in) {
 		try {
-			final int lenLen = format.getMessageLengthLength();
+			final int lenLen = format.getMessageLengthSize();
 			final byte[] lenBytes = new byte[lenLen];
 			int readCount = in.read(lenBytes);
 			if(debug) System.out.println("readCount : "+readCount+" lenBytes : "+ByteHexUtil.byteToHex(lenBytes));
@@ -41,6 +43,11 @@ public final class EncoderDecoder {
 		}
 	}
 	
+	public static final ISO8583Message readMessage(final ISOFormat format, final Socket socket, final int timeoutMs) throws IOException {
+		socket.setSoTimeout(timeoutMs);
+		return EncoderDecoder.decode(format, read(format, socket.getInputStream()));
+	}
+	
 	public static final ISO8583Message readMessage(final ISOFormat format, final InputStream in) {
 		return EncoderDecoder.decode(format, read(format, in));
 	}
@@ -53,7 +60,7 @@ public final class EncoderDecoder {
 			final Bitmap     bitmap = message.bitmap;
 			final String[]   data   = message.data;
 			final ByteBuffer buffer = new ByteBuffer(200); 
-			buffer.write(new byte[format.getMessageLengthLength()]);
+			buffer.write(new byte[format.getMessageLengthSize()]);
 			if (message.getNetHeader() != null && format.getNetHeaderLength() != 0) {
 				if(debug) System.out.println("NetHeader encoded : "+message.getNetHeader());
 				index.fIndex = ISOFormat.NET_HEADER_INDEX;
@@ -76,7 +83,7 @@ public final class EncoderDecoder {
 				}
 			}
 			final byte[] bytes    = buffer.toByteArray();
-			final byte[] lenbytes = format.getMessageLengthEncoder().encode(bytes.length - format.getMessageLengthLength(), format.getMessageLengthLength());
+			final byte[] lenbytes = format.getMessageLengthEncoder().encode(bytes.length - format.getMessageLengthSize(), format.getMessageLengthSize());
 			if(debug) System.out.println("encode lenbytes : "+ByteHexUtil.byteToHex(lenbytes));
 			System.arraycopy(lenbytes, 0, bytes, 0, lenbytes.length);
 			return bytes;
@@ -121,7 +128,7 @@ public final class EncoderDecoder {
 	}
 
 
-	public static StringBuilder log(ISO8583Message message) {
+	public static StringBuilder log(final ISO8583Message message) {
 		if (message == null) return null;
 		final StringBuilder sb = new StringBuilder(2000);
 		message.data[1] = ByteHexUtil.byteToHex(message.bitmap.toBytes());

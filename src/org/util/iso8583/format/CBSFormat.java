@@ -20,7 +20,7 @@ public final class CBSFormat extends ISOFormat {
 	private CBSFormat() {
 		super("CBS");
 		
-		this.messageLengthLength = 4;
+		this.messageLengthSize = 4;
 		
 		lencoder[MESSAGE_LENGTH_ENCODER_INDEX] = LengthEncoding.CHAR.encoder;
 		lencoder[CHAR_LENGTH_ENCODER_INDEX]    = LengthEncoding.CHAR.encoder;

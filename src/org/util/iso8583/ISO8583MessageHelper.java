@@ -45,28 +45,4 @@ public final class ISO8583MessageHelper {
 		return null;
 	}
 	
-	public static final void setExecutionHalted(final ISO8583Message message) {
-		if(message != null) message.putExtra(PropertyName.HALT_FILTER_EXECUTION, Boolean.toString(true));
-	}
-	
-	public static final boolean isExcutionHalted(final ISO8583Message message) {
-		return Boolean.parseBoolean(message.getExtra(String.class, PropertyName.HALT_FILTER_EXECUTION));
-	}
-	
-	
-	public static final String getTransactionType(final ISO8583Message message) {
-		if (message != null) return message.getExtra(String.class, PropertyName.TRANSACTION_TYPE);
-		return null;
-	}
-
-	public static final void setTransactionType(final ISO8583Message message, final String type) {
-		if(message != null) message.putExtra(PropertyName.TRANSACTION_TYPE, type);
-	}
-	
-	public static void main(String[] args) {
-		try {
-			final byte[] bytes = getRawRequest(new ISO8583Message());
-			System.out.println(bytes);
-		} catch (Exception e) {e.printStackTrace();}
-	}
 }

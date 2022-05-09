@@ -26,7 +26,7 @@ public final class NPCIFormat extends ISOFormat {
 	private NPCIFormat(final String name) {
 		super(name);
 
-		this.messageLengthLength = 2;
+		this.messageLengthSize = 2;
 		
 		lencoder[MESSAGE_LENGTH_ENCODER_INDEX] = LengthEncoding.BIN.encoder;
 		lencoder[CHAR_LENGTH_ENCODER_INDEX]    = LengthEncoding.CHAR.encoder;

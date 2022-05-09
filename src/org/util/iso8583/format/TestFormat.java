@@ -20,7 +20,7 @@ public final class TestFormat extends ISOFormat {
 	protected TestFormat() {
 		super("LOG");
 
-		this.messageLengthLength = 2;
+		this.messageLengthSize = 2;
 		
 		lencoder[MESSAGE_LENGTH_ENCODER_INDEX] = LengthEncoding.BIN.encoder;
 		lencoder[CHAR_LENGTH_ENCODER_INDEX]    = LengthEncoding.BIN.encoder;

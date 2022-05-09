@@ -3,8 +3,8 @@ package org.util.iso8583;
 import java.util.Map;
 
 import org.util.iso8583.api.ISO8583Function;
+import org.util.iso8583.constants.MTI;
 import org.util.iso8583.util.Bitmap;
-import org.util.iso8583.util.MiscUtil;
 
 public class ISO8583Functions {
 
@@ -12,7 +12,7 @@ public class ISO8583Functions {
 		@Override
 		public final String apply(String[] data, Bitmap bitmap, Map<String, Object> extra) {
 			final StringBuilder key = new StringBuilder(40);
-			if (data[0] != null) key.append(MiscUtil.getResponseMTI(data[0]));
+			if (data[0] != null) key.append(MTI.getResponseMTI(data[0]));
 			if (data[2] != null) key.append(data[2]);
 			if (data[7] != null) key.append(data[7]);
 			if (data[11] != null) key.append(data[11]);

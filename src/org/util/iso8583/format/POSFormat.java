@@ -27,7 +27,7 @@ public final class POSFormat extends ISOFormat {
 	private POSFormat(final String name) {
 		super(name);
 
-		this.messageLengthLength = 2;
+		this.messageLengthSize = 2;
 		
 		lencoder[MESSAGE_LENGTH_ENCODER_INDEX] = LengthEncoding.BIN.encoder;
 		lencoder[CHAR_LENGTH_ENCODER_INDEX]    = LengthEncoding.BCD.encoder;

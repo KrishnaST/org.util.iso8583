@@ -24,7 +24,7 @@ public class Test {
 			final ISO8583Message message = EncoderDecoder.decode(NPCIFormat.getInstance(), bytes);
 			final byte[] bytes1 = EncoderDecoder.encode(TestFormat.getInstance(), message);
 			System.out.println("bytes1 : "+ByteHexUtil.byteToHex(bytes1));
-			final ISO8583Message message1 = EncoderDecoder.decode(TestFormat.getInstance(), Arrays.copyOfRange(bytes1, TestFormat.getInstance().getMessageLengthLength(), bytes1.length));
+			final ISO8583Message message1 = EncoderDecoder.decode(TestFormat.getInstance(), Arrays.copyOfRange(bytes1, TestFormat.getInstance().getMessageLengthSize(), bytes1.length));
 			System.out.println(EncoderDecoder.log(message));
 			System.out.println(EncoderDecoder.log(message1));
 			if(!message.equals(message1)) throw new RuntimeException("false");

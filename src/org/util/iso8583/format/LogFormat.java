@@ -22,7 +22,7 @@ public final class LogFormat extends ISOFormat {
 	protected LogFormat() {
 		super("LOG");
 
-		this.messageLengthLength = 4;
+		this.messageLengthSize = 4;
 		
 		lencoder[MESSAGE_LENGTH_ENCODER_INDEX] = LengthEncoding.CHAR.encoder;
 		lencoder[CHAR_LENGTH_ENCODER_INDEX]    = LengthEncoding.CHAR.encoder;

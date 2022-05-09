@@ -79,7 +79,7 @@ public final class XMLFormatReaderWriter {
 		final Document               document    = builder.newDocument();
 		final Element                rootElement = document.createElement("format");
 		rootElement.setAttribute("name", format.name);
-		rootElement.setAttribute("message-length-length", Integer.toString(format.getMessageLengthLength()));
+		rootElement.setAttribute("message-length-length", Integer.toString(format.getMessageLengthSize()));
 		rootElement.setAttribute("bcd-pad-char", "" + format.getBCDPadChar());
 		rootElement.setAttribute("net-header-length", Integer.toString(format.getNetHeaderLength()));
 		rootElement.setAttribute("net-header-encoding", format.getNetHeaderEncoding().name());
